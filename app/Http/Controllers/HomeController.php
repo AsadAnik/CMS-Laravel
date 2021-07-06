@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // Eloquent ORM takes Post..
+        $posts = Post::all();
+
+        // One Way..
+        // return view('home')->with(['posts' => $posts]);
+
+        // Another Way..
+        return view('home', ['posts' => $posts]);
     }
 }

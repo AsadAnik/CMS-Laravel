@@ -19,5 +19,18 @@ use App\Http\Controllers\PostController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/admin', [AdminsController::class, 'index'])->name('admin');
-Route::get('/post', [PostController::class, 'show'])->name('post');
+
+// One way..
+//Route::get('/post/{id}', [PostController::class, 'show'])->name('post');
+
+// Another way..
+Route::get('/post/{post}', [PostController::class, 'show'])->name('post');
+
+
+// Authentication Middleware..
+Route::middleware('auth')->group(function(){
+    Route::get('/admin', [AdminsController::class, 'index'])->name('admin');
+    Route::get('/admin/posts/create', [PostController::class, 'create'])->name('post.create');
+    Route::post('/admin/posts', [PostController::class, 'store'])->name('post.store');
+});
+
