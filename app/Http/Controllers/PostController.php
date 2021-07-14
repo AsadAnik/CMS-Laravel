@@ -48,7 +48,8 @@ class PostController extends Controller
 
     // Index Method..
     public function index(){
-        return view('admin.posts.index');
+        $posts = Post::all();
+        return view('admin.posts.index')->with(['posts' => $posts]);
     }
 
 }
