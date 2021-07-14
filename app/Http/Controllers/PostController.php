@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+// Using the Models..
 use App\Models\Post;
+
 
 class PostController extends Controller
 {
@@ -21,8 +24,20 @@ class PostController extends Controller
     }
 
     // Store Method..
-    public function store(){
-        dd(request()->all());
+    public function store(Request $request){
+
+        $inputs = $request->validate([
+            'title' => 'required | min:8 | max:200',
+            'post_image' => 'file',
+            'body' => 'required'
+        ]);
+
+        if($request->post_image){
+            $inputs['post_image'] = $request->post_image->store('images');
+        }
+
+        auth()->user()->posts()->create($inputs);
+        return back();
     }
 
     // Create Method..
@@ -30,5 +45,10 @@ class PostController extends Controller
         return view('admin.posts.create');
     }
 
+
+    // Index Method..
+    public function index(){
+        return view('admin.posts.index');
+    }
 
 }
